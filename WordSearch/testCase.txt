@@ -1,0 +1,12 @@
+	char a[] = "ABCE";
+	char b[] = "SFCS";
+	char c[] = "ADEE";
+	vector<vector<char> > vvc;
+	vector<char> va(a, a+4);
+	vector<char> vb(b, b+4);
+	vector<char> vc(c, c+4);
+	vvc.push_back(va);
+	vvc.push_back(vb);
+	vvc.push_back(vc);
+
+	string tmp("SEE");
