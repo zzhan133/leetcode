@@ -13,6 +13,7 @@
 #include <set>
 #include <stack>
 #include <queue>
+#include <limits.h>
 //#include "WorkSearch_v2.h"
 
 using namespace std;
@@ -25,6 +26,13 @@ using namespace std;
       ListNode *next;
       ListNode(int x) : val(x), next(NULL) {}
   };
+
+ struct TreeNode {
+	 int val;
+	 TreeNode *left;
+	 TreeNode *right;
+	 TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ };
  
  /**
  * Definition for singly-linked list.
@@ -34,65 +42,62 @@ using namespace std;
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-class Solution {
-public:
-	ListNode *reverseK(ListNode *node, int k){
+ class Solution {
+ public:
+	 int largestRectangleArea(vector<int> &height) {
+		 stack<int> posStack;
+		 height.push_back(0);
+		 int maxArea = 0;
+		 for(unsigned int i = 0; i<height.size(); i++){
+			 if(posStack.size() == 0 || height[i] >= height[posStack.top()] )
+				 posStack.push(i);
+			 else{
+				 int tmp = posStack.top();
+				 posStack.pop();
+				 int dist = posStack.empty() ? i : ( i-posStack.top() -1);
+				 maxArea = max(maxArea ,height[tmp] * dist );
+				 i--;
+			 }
+		 }	
+		 return maxArea;
+	 }
+	 void getValue(vector<vector<char> > &matrix, int row, vector<int> &viRow){
+		 int col = matrix[row].size();
+		 for(int i = 0; i < col; i++){
+			 if(matrix[row][i] == '0'){
+				 viRow[i] = 0;
+			 }
+			 else{
+				 if(viRow[i] != 0)
+					 viRow[i]--;
+				 else{
+					 unsigned j = row;
+					 while(j<matrix.size() && matrix[j][i] == '1'){
+						 viRow[i]++;
+						 j++;
+					 }
+				 }
+			 }
+		 }
+	 }
+	 int maximalRectangle(vector<vector<char> > &matrix) {
+		 int maxArea = 0;
+		 int row = matrix.size();
+		 if(row == 0)
+			 return 0;
+		 int col = matrix[0].size();
+		 if(col == 0)
+			 return maxArea;
+		 vector<int> viRow(col, 0);
+		 //each column as a histgram
+		 for(int i = 0; i < row; i++){
+			 getValue(matrix, i, viRow);
+			 maxArea = max(maxArea, largestRectangleArea(viRow));
+		 }
+		 return maxArea;
+	 }
+ };
 
-		int i = 1;
-		
-		ListNode *first = node;
-		ListNode *last = node;
-		
-		while( i < k && last->next){
-			ListNode *tmp = last->next;
-			last->next = tmp->next;
-			tmp->next = first;
-			first = tmp;
-			i++;
-		}
-			
-		return first;
-		
-	}
-
-	//get the last element of a group
-	ListNode *nextStep(ListNode *node, int k){
-		
-		int i = 1;
-		while(i < k && node){
-			node = node->next;
-			i++;
-		}
-		return node;
-		
-	}
-
-
-    ListNode *reverseKGroup(ListNode *head, int k) {
- 	if(k<=1){
-		return head;
-	}	
-
-	ListNode *nextNode = nextStep(head,k);
-	if(nextNode == NULL)
-		return head;
-	
-	ListNode *newHead = reverseK(head, k);
-	nextNode = nextStep(newHead,k);
-
-	while(nextNode->next){
-		ListNode *lastPreNode = nextNode;
-		nextNode = nextStep(lastPreNode->next,k);
-		if(nextNode == NULL)
-			return newHead;
-		lastPreNode->next = reverseK(lastPreNode->next, k);
-		nextNode = nextStep(lastPreNode->next,k);
-
-	}
-
-	return newHead;
-    }
-};
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -103,28 +108,15 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	Solution instance;
 
-	string str("229");
+	string str("))))())()()(()");
 
-	ListNode *a = new ListNode(1);
-	ListNode *b = new ListNode(2);
-	ListNode *c = new ListNode(3);
-	ListNode *d = new ListNode(4);
-	ListNode *e = new ListNode(5);
-//	ListNode *f = new ListNode(6);
+	int arr[] = {2,1,5,6,2,3};
+	vector<int> vi(arr, arr+6);
 
-
-	a->next = b;
-	b->next = c;
-	c->next = d;
-	d->next = e;
-
-	int arr[] = {1,2,2,3};
-	vector<int> vi(arr, arr+4);
-
-	ListNode *iR = instance.reverseKGroup(a, 3);
+	int num = instance.largestRectangleArea(vi);
 //	vector<vector<int> > bR = instance.combinationSum2(vi, 1);
 //	vector< vector<int> > vvi = instance.subsetsWithDup(vi);
-	
+	//printf("%u\n",&tmp);
 
 	return 0;
 
