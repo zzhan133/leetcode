@@ -1,6 +1,0 @@
-
-	TreeNode* a = new TreeNode(1);
-	TreeNode* b = new TreeNode(2);
-	TreeNode* c = new TreeNode(3);
-	a->right = c;
-	c->right = b;

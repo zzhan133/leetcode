@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1401249657 source:c:\users\zhe\dropbox\programmer\leetcode\leetcodecodeblocks\main.cpp
+	"../SubstringwithConcatenationofAllWords\SubstringwithConcatenationofAllWords.h"
+	<iostream>
+
+1401249816 c:\users\zhe\dropbox\programmer\leetcode\substringwithconcatenationofallwords\substringwithconcatenationofallwords.h
+	<string>
+	<vector>
+	<iostream>
+	<time.h>
+	<climits>
+
+1401759687 source:d:\dropbox\programmer\leetcode\leetcodecodeblocks\main.cpp
+	"../combinations\combinations.h"
+	<iostream>
+	<climits>
+
+1401759591 d:\dropbox\programmer\leetcode\combinations\combinations.h
+	<vector>
+
