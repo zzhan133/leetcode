@@ -17,15 +17,8 @@ public class Atoi {
 			return 0;
 		}
 
-		// 2. check the tailing characters
-		int endIndex = str.length() - 1;
-		c = str.charAt(endIndex);
-		while (endIndex > beginIndex && (!Character.isDigit(c))) {
-			c = str.charAt(--endIndex);
-		}
-
 		boolean flag = true;
-		c = str.charAt(beginIndex);
+		c = str.charAt(beginIndex);  //the first no-space char
 		if (c == '+') {
 			flag = true;
 			beginIndex++;
@@ -35,30 +28,33 @@ public class Atoi {
 		} else if(!Character.isDigit(c)){
 			return 0;
 		}
-
-		// 2 handle Integer.MIN_VALUE
-		if (!flag) {
-			String substr = str.substring(beginIndex, endIndex+1);
-			if (substr.equals("2147483648")) {
-				return Integer.MIN_VALUE;
-			}
+		
+		if(beginIndex == str.length() || !Character.isDigit(str.charAt(beginIndex))) {
+			return 0;
 		}
-
+		
+		// 2. check the tailing characters
+		int endIndex = beginIndex;
+		while (endIndex < str.length() && Character.isDigit(str.charAt(endIndex))) {
+			endIndex++;
+		}
+		
 		int result = 0;
-		while (beginIndex <= endIndex) {
+		while (beginIndex < endIndex) {
 			c = str.charAt(beginIndex);
-			if (!Character.isDigit(c)) {
-				throw new IllegalArgumentException();
-			}
-			if (result == 214748364) {
-				if(c >= 48 && c <= 47 && beginIndex == endIndex) {
+			if (result >= 214748364) {
+				if((c >= 48 && c <= 55) && result / 10 < 100000000) {
 					result = result * 10 + c - 48;
-					return result;
 				} else {
-					throw new IllegalArgumentException();
+					if(flag) {
+						return Integer.MAX_VALUE;
+					} else {
+						return Integer.MIN_VALUE;
+					}
 				}
+			} else {
+				result = result * 10 + c - 48;
 			}
-			result = result * 10 + c - 48;
 			beginIndex++;
 		}
 
