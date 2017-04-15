@@ -33,34 +33,28 @@ public class MedianOfTwoSortedArrays {
     		return (double)findKthElem(nums1, 0, nums2, 0, (length1 + length2) / 2 + 1);
     	} else {
     		return (findKthElem(nums1, 0, nums2, 0, (length1 + length2) / 2 ) + 
-    				findKthElem(nums1, 0, nums2, 0, (length1 + length2) / 2) + 1) / 2.0;
+    				findKthElem(nums1, 0, nums2, 0, (length1 + length2) / 2 + 1)) / 2.0;
     	}
     }
     
-    public int findKthElem(int[] nums1, int low1, int[] nums2, int low2, int k) {
-		if (low1 >= nums1.length) {
-			return nums2[low2 + k - 1];
-		}
-		if (low2 >= nums2.length) {
-			return nums1[low1 + k - 1];
-		}
-
-		if (k == 1) {
-			return Math.min(nums1[low1], nums2[low2]);
-		}
-		
-		int A_key = low1 + k / 2 - 1 < nums1.length
-		            ? nums1[low1+ k / 2 - 1]
-		            : Integer.MAX_VALUE;
-		int B_key = low2+ k / 2 - 1 < nums2.length
-		            ? nums2[low2+ k / 2 - 1]
-		            : Integer.MAX_VALUE; 
-		
-		if (A_key < B_key) {
-			return findKthElem(nums1, low1+ k / 2, nums2, low2, k - k / 2);
-		} else {
-			return findKthElem(nums1, low1, nums2, low2+ k / 2, k - k / 2);
-		}
+    private int findKthElem(int[] nums1, int low1, int[] nums2, int low2, int k) {
+    	if(low1 >= nums1.length) {
+    		return nums2[low2 + k - 1];
+    	}
+    	if(low2 == nums2.length) {
+    		return nums1[low1 + k - 1];
+    	}
+    	if(k == 1) {
+    		return Math.min(nums1[low1], nums2[low2]);
+    	}
+    	int distance = k/2 - 1;
+    	int md1Value = low1 + distance < nums1.length ?  nums1[low1 + distance] : Integer.MAX_VALUE;
+    	int md2Value = nums2[low2 + distance];
+    	if(md1Value < md2Value) {
+    		return findKthElem(nums1, low1 + k / 2, nums2, low2, k - k/2);
+    	} else {
+    		return findKthElem(nums1, low1, nums2, low2 + k / 2, k - k/2);
+    	}
     }
 
 	private double findMedianWithIndex(int[] nums1, int low1, int high1, int[] nums2, int low2, int high2) {
