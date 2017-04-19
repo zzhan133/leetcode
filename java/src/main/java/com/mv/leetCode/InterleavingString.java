@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 public class InterleavingString {
 	public boolean isInterleave(String s1, String s2, String s3) {
+		if(s1 == null || s2 == null || s3 == null) {
+			return false;
+		}
 		if (s1.length() + s2.length() != s3.length()) {
 			return false;
 		}
@@ -24,44 +27,37 @@ public class InterleavingString {
 			return false;
 		}
 
-		if (s1.charAt(0) == s3.charAt(0)) {
-			if(s3 == s1 + s2) {
-				return true;
-			}
-
-			boolean ans = isInterleaveStartsWith(s1, s2, 1, s3, 1, "");
-			if (ans) {
-				return true;
-			}
-		}
-		if (s2.charAt(0) == s3.charAt(0)) {
-			if (isInterleaveStartsWith(s2, s1, 1, s3, 1, "")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isInterleaveStartsWith(String s1, String s2, int posS1, String s3, int posS3, String str) {
-		if (posS1 == s1.length()) {
-			return s3.substring(posS3).equals(s2.substring(0 + str.length()));
-		}
-		char cS1 = s1.charAt(posS1);
-		while (posS3 < s3.length()) {
-			if (s3.charAt(posS3) == cS1) {
-				if (s2.startsWith(str)) {
-					if (isInterleaveStartsWith(s1, s2, posS1 + 1, s3, posS3 + 1, str)) {
-						return true;
-					}
-				} else {
-					return false;
+		boolean[][] dp = new boolean[s1.length() + 1][s2.length() + 1];
+		for (int i = 0; i <= s1.length(); i++) {
+			for (int j = 0; j <= s2.length(); j++) {
+				if(i == 0 && j == 0) {
+					dp[i][j] = true;
 				}
-			} else {
-				str = str + s3.charAt(posS3);
+				else if(i == 0) {
+					dp[i][j] = dp[i][j-1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+				}
+				else if(j == 0 ) {
+					dp[i][j] = s1.charAt(i - 1) == s3.charAt(i - 1) && dp[i-1][j];
+				}
+ 				else if(s1.charAt(i-1) == s3.charAt(i + j - 1) && 
+						s2.charAt(j-1) != s3.charAt(i +j -1)) {
+					dp[i][j] = dp[i-1][j];
+				} else if (s1.charAt(i - 1) != s3.charAt(i + j - 1) &&
+						s2.charAt(j-1) == s3.charAt(i+j-1)) {
+					dp[i][j] = dp[i][j-1];
+					
+				} else if(s1.charAt(i - 1) == s3.charAt(i + j - 1) &&
+						s2.charAt(j - 1) == s3.charAt(i + j - 1)) {
+					dp[i][j] = dp[i-1][j] || dp[i][j-1];
+				}
 			}
-			posS3++;
 		}
-		return false;
+		return dp[s1.length()][s2.length()];
 	}
-
+//	for (int i = 0; i < dp.length; i++) {
+//		for (int j = 0; j < dp[0].length; j++) {
+//			System.out.print(dp[i][j] + ",");
+//		}
+//		System.out.println();
+//	}
 }
