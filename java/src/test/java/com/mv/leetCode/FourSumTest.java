@@ -30,4 +30,11 @@ public class FourSumTest {
 		List<List<Integer>> ans = obj.fourSum(nums, -11);
 		assertEquals(1, ans.size());
 	}
+	
+	@Test
+	public void testFourSum3() throws Exception {
+		int[] nums = {-4,-3,-2,-1,0,0,1,2,3,4};
+		List<List<Integer>> ans = obj.fourSum(nums, 0);
+		assertEquals(16, ans.size());
+	}
 }

@@ -6,61 +6,56 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FourSum {
-    public List<List<Integer>> fourSum(int[] nums, int target) {
-    	List<List<Integer>> ans = new LinkedList<>();
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
-        	if(i != 0 && nums[i] == nums[i-1]) {
-        		continue;
-        	}
-        	if(nums[i] > 0 && nums[i] > target) {
-        		break;
-        	}
-        	int[] item = new int[4];
-        	item[0] = nums[i];
-        	threeSum(nums, target - nums[i], i + 1, nums.length - 1, item, ans);
-			
+	public List<List<Integer>> fourSum(int[] nums, int target) {
+		List<List<Integer>> ans = new LinkedList<>();
+		if(nums == null || nums.length < 4) {
+			return ans;
 		}
-        return ans;
-    }
-    
-    private void threeSum(int[] nums, int target, int low, int high, int[] item, List<List<Integer>> ans){
-    	for (int i = low; i <= high; i++) {
-    		if(i > low && nums[i] == nums[i-1]) {
-        		continue;
-        	}
-    		
-			item[1] = nums[i];
-			twoSum(nums, target - nums[i], i+1, high, item, ans);
-		}
-    }
-
-	private void twoSum(int[] nums, int target, int low, int high, int[] item, List<List<Integer>> ans) {
-		int origLow = low;
-		int origHigh = high;
-		while(low < high) {
-			while(low > origLow && low < high && nums[low] == nums[low -1]) {
-				low++;
+		Arrays.sort(nums);
+		int[] item = new int[4];
+		for (int i = 0; i < nums.length - 3; i++) {
+			if (i != 0 && nums[i] == nums[i - 1]) {
+				continue;
 			}
-			while(high < origHigh && low < high && nums[high] == nums[high + 1]) {
-				high--;
-			}
-			if(low == high) {
+			if (nums[i] > 0 && nums[i] > target) {
 				break;
 			}
-			if(nums[low] + nums[high] == target) {
-				item[2] = nums[low];
-				item[3] = nums[high];
-				List<Integer> tmp = new ArrayList<>(Arrays.asList(item[0],item[1],item[2],item[3] ));
-				ans.add(tmp);
-				low++;
-				high--;
-			} else if(nums[low] + nums[high] > target) {
-				high--;
-			} else {
-				low++;
+			item[0] = nums[i];
+			int targetThree = target - item[0];
+			for (int j = i + 1; j < nums.length - 2; j++) {
+				if (j > i + 1 && nums[j] == nums[j - 1]) {
+					continue;
+				}
+				if (nums[j] > 0 && nums[j] > targetThree)
+					break;
+				item[1] = nums[j];
+				int targetTwo = targetThree - item[1];
+				int low = j + 1, high = nums.length - 1;
+				while (low < high) {
+					while (low > j + 1 && low < high && nums[low] == nums[low - 1]) {
+						low++;
+					}
+					while (high < nums.length - 1 && low < high && nums[high] == nums[high + 1]) {
+						high--;
+					}
+					if (low == high)
+						break;
+					if (nums[low] + nums[high] == targetTwo) {
+						item[2] = nums[low];
+						item[3] = nums[high];
+						List<Integer> tmp = new ArrayList<>(Arrays.asList(item[0], item[1], item[2], item[3]));
+						ans.add(tmp);
+						low++;
+						high--;
+					} else if (nums[low] + nums[high] > targetTwo) {
+						high--;
+					} else {
+						low++;
+					}
+				}
 			}
-		}
-	}
 
+		}
+		return ans;
+	}
 }
