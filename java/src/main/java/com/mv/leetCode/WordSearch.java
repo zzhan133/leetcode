@@ -1,7 +1,5 @@
 package com.mv.leetCode;
 
-import javax.security.auth.Subject;
-
 public class WordSearch {
 	public boolean exist(char[][] board, String word) {
 		int M = board.length;

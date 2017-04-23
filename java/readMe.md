@@ -11,6 +11,7 @@
 ### Medium
 * 54 . Spiral Matrix
 * 46 . Permutations
+* 126 . Word Ladder II
 
 
 ### Hard
@@ -20,6 +21,7 @@
 * 4 . Median of Two Sorted Arrays
 * 47 . Permutations II
 * 53 . Maximum Subarray
+* 126 . Word Ladder II
 
 ### group by same strategy
 * 
