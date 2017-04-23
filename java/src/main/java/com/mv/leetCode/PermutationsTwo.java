@@ -10,26 +10,37 @@ public class PermutationsTwo {
         List<List<Integer>> ans = new LinkedList<>();
         if(nums == null || nums.length == 0) return ans;
         Arrays.sort(nums);
-        LinkedList<Integer> item = new LinkedList<>();
-        boolean[] visited = new boolean[nums.length];
-        permute(nums, ans, item, visited);
+        permute(nums, 0, ans);
         return ans;
     }
     
-    private void permute(int[] nums, List<List<Integer>> ans, LinkedList<Integer> item, boolean[] visited) {
-    	if(item.size() == nums.length) {
-    		ans.add(new ArrayList<>(item));
+    private void permute(int[] nums, int beginIndex, List<List<Integer>> ans) {
+    	if(beginIndex == nums.length) {
+    		ArrayList<Integer> tmp = new ArrayList<>();
+    		for(int a: nums) tmp.add(a);
+    		ans.add(new ArrayList<Integer>(tmp));
     		return;
     	}
-    	for (int i = 0; i < nums.length; i++) {
-    		if(visited[i]) continue;
-    	    if(i > 0  && !visited[i-1] && nums[i] == nums[i-1]) continue;
-			item.add(nums[i]);
-			visited[i] = true;
-			permute(nums, ans, item, visited);
-			visited[i] = false;
-			item.pollLast();
+    	for (int i = beginIndex; i < nums.length; i++) {
+    		boolean skip = false;
+    		for (int j = beginIndex; j < i; j++) {
+				if(nums[j] == nums[i]){
+					skip = true;
+					break;
+				}
+			}
+    		if(skip) continue;
+    		swap(nums, beginIndex,i);
+			permute(nums, beginIndex+1, ans);
+			swap(nums, beginIndex, i);
+			
 		}
     }
     
+    private void swap(int[] nums, int beginIndex, int i) {
+    	if(beginIndex == i) return;
+    	int tmp = nums[i];
+    	nums[i] = nums[beginIndex];
+    	nums[beginIndex] = tmp;
+	}
 }
