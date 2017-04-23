@@ -12,6 +12,7 @@
 * 54 . Spiral Matrix
 * 46 . Permutations
 * 126 . Word Ladder II
+# 139 . Word Break
 
 
 ### Hard
