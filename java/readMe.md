@@ -8,7 +8,8 @@
 * 167. Two Sum II - Input array is sorted
 
 ### Medium
-# 54. Spiral Matrix
+* 54. Spiral Matrix
+* 46. Permutations
 
 
 ### Hard
@@ -16,6 +17,7 @@
 
 ### Need to practice again
 * 4. Median of Two Sorted Arrays
+* 47. Permutations II
 * 53. Maximum Subarray
 
 ### group by same strategy

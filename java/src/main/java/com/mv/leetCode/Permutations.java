@@ -19,13 +19,11 @@ public class Permutations {
     		ans.add(new ArrayList<Integer>(Arrays.asList(item)));
     		return;
     	}
-    	int[] backup = Arrays.copyOf(nums, nums.length);
     	for (int i = beginIndex; i < nums.length; i++) {
 			item[beginIndex] = nums[i];
     		swap(nums, beginIndex, i);
 			permute(nums, beginIndex+1, ans, item);
-			//swap(nums, beginIndex, i);
-			nums = backup;
+			swap(nums, beginIndex, i);
 		}
     }
     
