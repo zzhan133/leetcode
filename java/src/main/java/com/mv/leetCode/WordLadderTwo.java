@@ -1,6 +1,7 @@
 package com.mv.leetCode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,75 +11,80 @@ import java.util.Queue;
 import java.util.Set;
 
 public class WordLadderTwo {
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> ans = new LinkedList<>();
-		Set<String> wordSet = new HashSet<>(wordList);
-		if(!wordSet.contains(endWord)) return ans;
-		Map<String, Set<String>> graph = new HashMap<>();
-		Set<String> visited = new HashSet<>();
-		Queue<String> queue = new LinkedList<>();
-		Queue<String> nextLevel = new LinkedList<>();
-		queue.add(beginWord);
-		visited.add(beginWord);
-		
-		while (!queue.isEmpty()) {
-			while (!queue.isEmpty()) {
-				String str = queue.remove();
-				char c = 'a';
-				while (c <= 'z') {
-					for (int i = 0; i < str.length(); i++) {
-						StringBuilder sb = new StringBuilder(str);
-						if(c == sb.charAt(i)) continue;
-						sb.setCharAt(i, c);
-						String trans = sb.toString();
-						if(trans.equals(endWord)){
-							if(!graph.containsKey(endWord)) {
-								Set<String> connected = new HashSet<>();
-								graph.put(endWord, connected);
-							}
-							graph.get(endWord).add(str);
-						}
-						else if (wordSet.contains(trans) && !visited.contains(trans)) {
-							nextLevel.add(trans);
-							if(!graph.containsKey(trans)) {
-								Set<String> connected = new HashSet<>();
-								graph.put(trans, connected);
-							}
-							graph.get(trans).add(str);
-						}
-					}
-					c += 1;
-				}
-			}
-			if(graph.containsKey(endWord)){
-				break;
-			}
-			visited.addAll(nextLevel);
-			queue = nextLevel;
-			nextLevel = new LinkedList<>();
+	public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> ladders = new ArrayList<List<String>>();
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Map<String, Integer> distance = new HashMap<String, Integer>();
+        Set<String> dict = new HashSet<>(wordList);
 
-		}
-		if(!graph.containsKey(endWord)) {
-			return ans;
-		}
-		LinkedList<String> path = new LinkedList<>();
-		path.add(endWord);
-		getPath(ans, graph, endWord, path);
-        return ans;
+        dict.add(beginWord);
+        dict.add(endWord);
+ 
+        bfs(map, distance, beginWord, endWord, dict);
+        
+        List<String> path = new ArrayList<String>();
+        
+        dfs(ladders, path, endWord, beginWord, distance, map);
+
+        return ladders;
     }
 
-	private void getPath(List<List<String>> ans, Map<String, Set<String>> graph, String endWord, LinkedList<String> path) {
-		Set<String> nextPoints = graph.get(endWord);
-		if (nextPoints == null || nextPoints.isEmpty()) {
-			ans.add(new ArrayList<String>(path));
-			return;
-		}
-		
-		for(String nextStop: nextPoints) {
-			path.addFirst(nextStop);
-			getPath(ans, graph, nextStop, path);
-			path.remove(0);
-		}
-	}
+    void dfs(List<List<String>> ladders, List<String> path, String crt,
+            String beginWord, Map<String, Integer> distance,
+            Map<String, List<String>> map) {
+        path.add(crt);
+        if (crt.equals(beginWord)) {
+            Collections.reverse(path);
+            ladders.add(new ArrayList<String>(path));
+            Collections.reverse(path);
+        } else {
+            for (String next : map.get(crt)) {
+                if (distance.containsKey(next) && distance.get(crt) == distance.get(next) + 1) { 
+                    dfs(ladders, path, next, beginWord, distance, map);
+                }
+            }           
+        }
+        path.remove(path.size() - 1);
+    }
 
+    void bfs(Map<String, List<String>> map, Map<String, Integer> distance,
+            String beginWord, String endWord, Set<String> dict) {
+        Queue<String> q = new LinkedList<String>();
+        q.offer(beginWord);
+        distance.put(beginWord, 0);
+        for (String s : dict) {
+            map.put(s, new ArrayList<String>());
+        }
+        
+        while (!q.isEmpty()) {
+            String crt = q.poll();
+
+            List<String> nextList = expand(crt, dict);
+            for (String next : nextList) {
+                map.get(next).add(crt);
+                if (!distance.containsKey(next)) {
+                    distance.put(next, distance.get(crt) + 1);
+                    q.offer(next);
+                }
+            }
+        }
+    }
+
+    List<String> expand(String crt, Set<String> dict) {
+        List<String> expansion = new ArrayList<String>();
+
+        for (int i = 0; i < crt.length(); i++) {
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                if (ch != crt.charAt(i)) {
+                    String expanded = crt.substring(0, i) + ch
+                            + crt.substring(i + 1);
+                    if (dict.contains(expanded)) {
+                        expansion.add(expanded);
+                    }
+                }
+            }
+        }
+
+        return expansion;
+    }
 }
