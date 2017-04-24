@@ -33,20 +33,21 @@ public class LetterCombinationsOf_a_PhoneNumber {
 		maps.put('7', Arrays.asList(a7));
 		maps.put('8', Arrays.asList(a8));
 		maps.put('9', Arrays.asList(a9));
-		combinations(digits, 0, ans, "", maps);
+		combinations(ans, digits, maps, 0, "");
 		return ans;
 	}
 
-	private void combinations(String digits, int pos, List<String> ans, String item,
-			Map<Character, List<Character>> maps) {
-		if (pos == digits.length()) {
-			ans.add(item);
+	private void combinations(List<String> ans, String digits, Map<Character, List<Character>> maps, int pos, String str) {
+		if(pos == digits.length()) {
+			ans.add(str);
 			return;
 		}
-		char digit = digits.charAt(pos);
-		List<Character> chars = maps.get(digit);
-		for (Character c : chars) {
-			combinations(digits, pos + 1, ans, item + c, maps);
+		
+		List<Character> letters = maps.get(digits.charAt(pos));
+		for (Character c: letters) {
+			combinations(ans, digits, maps, pos + 1, str + c);
 		}
 	}
+
+
 }
