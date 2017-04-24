@@ -3,6 +3,7 @@
 
 * 17 . Letter Combinations of a Phone Number  
 * 26 . Remove Duplicates from Sorted Array
+* 36 . Valid Sudoku
 * 56 . Merge Intervals
 * 58 . Length of Last Word
 * 64 . Minimum Path Sum
