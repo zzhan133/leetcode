@@ -22,6 +22,7 @@
 
 ### Need to practice again
 * 4 . Median of Two Sorted Arrays
+* 37 . Sudoku Solver
 * 47 . Permutations II
 * 53 . Maximum Subarray
 * 126 . Word Ladder II

@@ -31,11 +31,11 @@ public class SudokuSolver {
 	private boolean helper(char[][] board, PriorityQueue<EmptyCell> pq) {
 		if (pq.isEmpty())
 			return true;
-		EmptyCell cell = pq.poll();
-		if (cell.candidates.isEmpty()) {
-			pq.add(cell);
+		if (pq.peek().candidates.isEmpty()) {
 			return false;
 		}
+		PriorityQueue<EmptyCell> backup = new PriorityQueue<>(pq);
+		EmptyCell cell = pq.poll();
 		for (Character c : cell.candidates) {
 			board[cell.rPos][cell.cPos] = c;
 			updatePQ(board, pq, cell);
@@ -43,7 +43,7 @@ public class SudokuSolver {
 			board[cell.rPos][cell.cPos] = '.';
 			updatePQ(board, pq, cell);
 		}
-		pq.add(cell);
+		pq = backup;
 		return false;
 	}
 
