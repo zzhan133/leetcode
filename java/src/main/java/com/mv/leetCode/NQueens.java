@@ -1,70 +1,67 @@
 package com.mv.leetCode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class NQueens {
 	public List<List<String>> solveNQueens(int n) {
 		List<List<String>> ans = new LinkedList<>();
-		List<String> board = new ArrayList<>();
-		nQueens(ans, n, board);
+		char[][] board = new char[n][n];
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				board[i][j] = '.';
+			}
+		}
+		nQueens(ans, 0, board);
 
 		return ans;
 	}
 
-	private void nQueens(List<List<String>> ans, int n, List<String> board) {
-		if (board.size() == n) {
-			ans.add(new ArrayList<>(board));
+	private void nQueens(List<List<String>> ans, int targetLevel, char[][] board) {
+		if (targetLevel == board.length) {
+			ArrayList<String> strBoard = new ArrayList<>();
+			for(char[] row : board) strBoard.add(new String(row));
+			ans.add(strBoard);
 			return;
 		}
-		List<String> candidates = getCandicates(board, n);
-		for (String row : candidates) {
-			board.add(row);
-			nQueens(ans, n, board);
-			board.remove(board.size() - 1);
+		List<Boolean> candidates = getCandicates(board, targetLevel);
+		for (int pos = 0; pos < candidates.size(); pos++) {
+			if (candidates.get(pos)) {
+				board[targetLevel][pos] = 'Q';
+				nQueens(ans, targetLevel + 1, board);
+				board[targetLevel][pos] = '.';
+				
+			}
 		}
-
 	}
 
-	private List<String> getCandicates(List<String> board, int n) {
-		List<String> ans = new ArrayList<>();
+	private List<Boolean> getCandicates(char[][] board, int targetLevel) {
 		List<Boolean> candicates = new ArrayList<>();
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < board.length; i++) {
 			candicates.add(true);
 		}
-		if (!board.isEmpty()) {
-			int rows = board.size();
-			for (int i = 0; i < rows; i++) {
-				for (int j = 0; j < n; j++) {
-					if (board.get(i).charAt(j) == 'Q') {
+		if (targetLevel > 0) {
+			for (int i = 0; i < targetLevel; i++) {
+				for (int j = 0; j < board.length; j++) {
+					if (board[i][j] == 'Q') {
 						candicates.set(j, false);
 						// cross attack
 						int rowPos = i, leftColPos = j, rightColPos = j;
-						while (rowPos < board.size()) {
+						while (rowPos < targetLevel) {
 							rowPos++;
 							leftColPos--;
 							rightColPos++;
 						}
-						if (leftColPos >= 0 && leftColPos < n)
+						if (leftColPos >= 0 && leftColPos < board.length)
 							candicates.set(leftColPos, false);
-						if (rightColPos >= 0 && rightColPos < n)
+						if (rightColPos >= 0 && rightColPos < board.length)
 							candicates.set(rightColPos, false);
 					}
 				}
 			}
 		}
-		for (int i = 0; i < candicates.size(); i++) {
-			if (candicates.get(i)) {
-				char[] arr = new char[n];
-				Arrays.fill(arr, '.');
-				arr[i] = 'Q';
-				String item = new String(arr);
-				ans.add(item);
-			}
-		}
-		return ans;
+		return candicates;
 	}
 
 }
