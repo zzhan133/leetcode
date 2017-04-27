@@ -14,7 +14,6 @@ public class SurroundedRegions {
     private boolean proc(char[][] board, int i, int j) {
 		int M = board.length;
 		int N = board[0].length;
-		if(i < 1 || i > M -1 || j < 1 || j > N - 1) return false; //[i][j+1]; [i][j-1]; [i+1][j]; [i-1][j]
 		if(i == 0 && board[i][j] == 'O') return false;
 		if(i == 0 && board[i][j] == 'X') return true;
 		if(j == 0 && board[i][j] == 'O') return false;
