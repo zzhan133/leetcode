@@ -4,12 +4,10 @@ public class SurroundedRegions {
 	public void solve(char[][] board) {
 		if (board == null || board.length <= 1 || board[0].length <= 1)
 			return;
-		board = transform(board);
-		if (board == null || board.length <= 1 || board[0].length <= 1)
-			return;
 		int M = board.length;
 		int N = board[0].length;
 		boolean[][] isRemain = new boolean[M][N];
+		
 
 		for (int i = 0; i <= N - 1; i++) {
 			if (board[0][i] == 'O') {
