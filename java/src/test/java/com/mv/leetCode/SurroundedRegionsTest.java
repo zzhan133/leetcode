@@ -19,6 +19,18 @@ public class SurroundedRegionsTest {
 		print(board);
 	}
 
+	@Test
+	public void testSolve1() throws Exception {
+		char[][] board = {
+				{'O', 'O', 'O'},
+				{'O', 'O', 'O'},
+				{'O', 'O', 'O'}
+		};
+		
+		obj.solve(board);
+		print(board);
+	}
+	
 	private void print(char[][] board) {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board.length; j++) {
