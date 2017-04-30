@@ -1,7 +1,5 @@
 package com.mv.leetCode;
 
-import java.util.PriorityQueue;
-
 public class BestTimeToBuyAndSellStockThree {
 	
 	private int getNextMinPos(int[] prices, int pos) {
@@ -20,21 +18,6 @@ public class BestTimeToBuyAndSellStockThree {
 		return prices.length - 1;
 	}
 	
-	public int[] getMaxProfit(int[] prices) {
-		int N = prices.length;
-		int[] ans = new int[N];
-		ans[0] = 0;
-		int minPos = 0;
-		for (int i = 1; i < N; i++) {
-			if(prices[i] < prices[minPos]) {
-				ans[i] = ans[i-1];
-			} else{
-				ans[i] = Math.max(ans[i-1], prices[i] - prices[minPos]);
-			}
-		}
-		return ans;
-	}
-	
 	public int getMaxProfit(int[] prices, int begin, int end) {
 		int ans = 0;
 		int minPos = begin;
@@ -47,6 +30,23 @@ public class BestTimeToBuyAndSellStockThree {
 		}
 		return ans;
 	}
+	
+	public int[] getMaxProfit(int[] prices) {
+		int N = prices.length;
+		int[] ans = new int[N];
+		ans[0] = 0;
+		int minPos = 0;
+		for (int i = 1; i < N; i++) {
+			if(prices[i] < prices[minPos]) {
+				minPos = i;
+				ans[i] = ans[i-1];
+			} else{
+				ans[i] = Math.max(ans[i-1], prices[i] - prices[minPos]);
+			}
+		}
+		return ans;
+	}
+	
 	
 	public int[] getMaxProfitFromEndToBegin(int[] prices) {
 		int[] ans = new int[prices.length];
@@ -66,23 +66,13 @@ public class BestTimeToBuyAndSellStockThree {
 	public int maxProfit(int[] prices) {
 		if (prices == null || prices.length <= 1)
 			return 0;
-
-		int ans = 0;
-		PriorityQueue<Integer> queue = new PriorityQueue<>();
-		int minPos = getNextMinPos(prices, 0);
-		while(minPos < prices.length - 1) {
-			int maxPos = minPos + 1;
-			maxPos = getNextMaxPos(prices, minPos + 1);
-			int gap = prices[maxPos] - prices[minPos];
-			queue.add(gap);
-			if (queue.size() > 2)
-				queue.poll();
-			if(maxPos == prices.length - 1) break;
-			minPos = getNextMinPos(prices, maxPos + 1);
+		
+		int[] firstNthProfit = getMaxProfit(prices);
+		int[] lastNthProfit = getMaxProfitFromEndToBegin(prices);
+		int ans = firstNthProfit[prices.length - 1];
+		for (int i = 1; i < lastNthProfit.length - 1; i++) {
+			ans = Math.max(ans, firstNthProfit[i] + lastNthProfit[i+1]);
 		}
-
-		while (!queue.isEmpty())
-			ans += queue.poll();
 		return ans;
 	}
 

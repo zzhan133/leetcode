@@ -26,6 +26,7 @@
 
 ### Need to practice again
 * 4 . Median of Two Sorted Arrays
+* 32 . Longest valid Parentheses (Use index as the elements of the stack)
 * 37 . Sudoku Solver
 * 47 . Permutations II
 * 53 . Maximum Subarray
