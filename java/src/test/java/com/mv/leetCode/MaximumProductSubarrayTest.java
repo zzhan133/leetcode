@@ -50,4 +50,11 @@ public class MaximumProductSubarrayTest {
 		assertEquals(6, obj.maxProduct(nums));
 	}
 	
+	
+	@Test
+	public void testMaxProduct7() throws Exception {
+		int[] nums = {-5, 0, 2};
+		assertEquals(2, obj.maxProduct(nums));
+	}
+	
 }
