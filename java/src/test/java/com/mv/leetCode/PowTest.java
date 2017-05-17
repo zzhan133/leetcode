@@ -22,5 +22,13 @@ public class PowTest {
 		System.out.println(obj.myPow(3, -7));
 		System.out.println(Math.abs(-110));
 	}
+	
+	@Test
+	public void testPow1() throws Exception {
+		Pow obj = new Pow();
+//		assertEquals( 1.0, obj.myPow(-1, Integer.MIN_VALUE), 0.1);
+		assertEquals( 0.0, obj.myPow(-2, Integer.MIN_VALUE), 0.1);
+
+	}
 
 }

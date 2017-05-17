@@ -26,7 +26,7 @@
 
 ### Need to practice again
 * 4 . Median of Two Sorted Arrays
-* 32 . Longest valid Parentheses (Use index as the elements of the stack)
+* 32 . à (Use index as the elements of the stack)
 * 37 . Sudoku Solver
 * 47 . Permutations II
 * 53 . Maximum Subarray
@@ -35,6 +35,7 @@
 * 126 . Word Ladder II
 * 124 . Binary Tree Maximum Path Sum
 * 123 . Best Time to Buy and Sell Stock III
+* 152 . Maximum Product Subarray
 
 ### group by same strategy
 #### Tree && DFS

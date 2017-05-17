@@ -1,42 +1,44 @@
 package com.mv.leetCode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PalindromePartitioning {
 
     public List<List<String>> partition(String s) {
-        List<List<String>> ans = new LinkedList<>();
-        List<String> item = new ArrayList<>();
-    	if(s == null || s.isEmpty()) return ans;
-        iterate(s, ans, item, 0);
+        List<List<String>> ans = new ArrayList<>();
+        if(s == null || s.length() == 0) return ans;
+        List<String> path = new ArrayList<>();
+        dfs(s, 0, ans, path);
         return ans;
     }
-
-	private void iterate(String s, List<List<String>> ans, List<String> item, int begin) {
-		if(begin == s.length()) {
-			ans.add(new ArrayList<>(item));
-			return;
-		}
-		int pos = begin + 1;
-		while(pos <= s.length()) {
-			if(isPalindrome(s, begin, pos-1)) {
-				item.add(s.substring(begin, pos));
-				iterate(s, ans, item, pos);
-				item.remove(item.size() - 1);
-			}
-			pos++;
-		}
-	}
-
-	private boolean isPalindrome(String s, int begin, int end) {
-		while(begin <= end) {
-			if(s.charAt(begin) != s.charAt(end)) return false;
-			begin++;
-			end--;
-		}
-		return true;
-	}
+    
+    private void dfs(String s, int pos, List<List<String>> ans, List<String> path) {
+        if(pos == s.length()) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        
+        for(int end = pos; end < s.length(); end++) {
+            if(isPalindrome(s, pos, end)) {
+                path.add(s.substring(pos, end + 1));
+                dfs(s, end + 1, ans, path);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    
+    private boolean isPalindrome (String s, int left, int right) {
+        while(left < right) {
+                if (s.charAt(right) == s.charAt(left)) {
+                    right--;
+                    left++;
+                } else {
+                    return false;
+                }
+                
+            }
+        return true;
+    }
     
 }
