@@ -13,15 +13,20 @@ public class ThreeSumClosest {
             int right = nums.length - 1;
                 while (left < right) {
                     int sum = nums[left] + nums[right];
-                    int abs = Math.abs(sum - twoSum);
-                    if(abs < distance) {
-                        distance = abs;
-                        ans = nums[i] + nums[left] + nums[right];
-                    }
                     if (sum == twoSum) return target;
                     else if (sum < twoSum) {
+                    	int dc = twoSum - sum;
+                    	if (dc < distance) {
+							distance = dc;
+							ans = twoSum - dc;
+						}
                         left++;
                     } else {
+                    	int dc = sum - twoSum;
+                    	if (dc < distance) {
+							distance = dc;
+							ans = twoSum + dc;
+						}
                         right--;
                     }
                 }
