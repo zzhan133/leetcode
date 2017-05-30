@@ -5,7 +5,39 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InsertInterval {
+	
     public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        List<Interval> ans = new LinkedList<>();
+        int walker = 0;
+        int newStart = -1;
+        while (walker < intervals.size()) {
+            if (intervals.get(walker).end < newInterval.start) {
+                ans.add(intervals.get(walker));
+                walker++;
+            } else {
+                newStart = newStart == -1 ?  Math.min(intervals.get(walker).start, newInterval.start) : newStart;
+                while (walker < intervals.size()) {
+                    Interval item = intervals.get(walker);
+                    if(newInterval.end < item.start) {
+                        ans.add(new Interval(newStart, newInterval.end));
+                        break;
+                    } else if (newInterval.end <= item.end) {
+                        ans.add(new Interval(newStart, item.end));
+                        walker++;
+                        break;
+                    } else {
+                        walker++;
+                    }
+                }
+            }
+        }
+        if(ans.isEmpty() || newInterval.start > ans.get(ans.size() - 1).end) {
+            ans.add(newInterval);
+        }
+        return ans;
+    }
+    
+    public List<Interval> insert1(List<Interval> intervals, Interval newInterval) {
     	List<Interval> ans = new LinkedList<Interval>();
     	if(intervals.isEmpty()) {
     		ans.add(newInterval);
