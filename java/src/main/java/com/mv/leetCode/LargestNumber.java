@@ -8,18 +8,9 @@ public class LargestNumber {
 	public String largestNumber(int[] nums) {
 		if(nums == null || nums.length == 0) return "";
 		Comparator<String> cmp = (e1, e2) -> {
-			int length = e1.length() > e2.length() ? e1.length() : e2.length();
-			int pos = 0;
-			char c1 = '0';
-			char c2 = '0';
-			while (pos < length) {
-				c1 = pos >= e1.length() ? e2.charAt(pos-e1.length()) : e1.charAt(pos);
-				c2 = pos >= e2.length() ? e1.charAt(pos-e2.length()) : e2.charAt(pos);
-				if(c1 > c2) return -1;
-				else if(c1 < c2) return 1;
-				pos++;
-			}
-			return 0;
+			String s1 = e1 + e2;
+			String s2 = e2 + e1;
+			return 0 - s1.compareTo(s2);
 		};
 		List<String> strs = new ArrayList<>(); 
 		for(int elem: nums) {
