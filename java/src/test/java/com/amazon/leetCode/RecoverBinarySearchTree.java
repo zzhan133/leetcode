@@ -1,49 +1,52 @@
 package com.amazon.leetCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mv.leetCode.TreeNode;
 
 public class RecoverBinarySearchTree {
 	public void recoverTree(TreeNode root) {
-		recover(root, null, null);
+		List<TreeNode> bads = new ArrayList<TreeNode>();
+		recover(root, null, null, bads);
+		if(bads.size() == 4) {
+			int tmp = bads.get(0).val;
+			bads.get(0).val = bads.get(3).val;
+			bads.get(3).val = tmp;
+			return;
+		} else {
+			
+		}
 	}
 
-	private TreeNode recover(TreeNode node, TreeNode left, TreeNode right) {
-		if(node == null) return null;
-		if (left == null) {
-			if (right != null && node.val > right.val) {
-				return node;
+	private void recover(TreeNode node, TreeNode left, TreeNode right, List<TreeNode> bads) {
+		if (node == null)
+			return;
+		if (left != null && node.val < left.val) {
+			int v = node.val;
+			TreeNode tmpNode = node;
+			while(tmpNode.right != null) {
+				tmpNode = tmpNode.right;
+				if(tmpNode.val < v) {
+					int tmp = left.val;
+					left.val = tmpNode.val;
+					tmpNode.val = tmp;
+					return;
+				}
 			}
+			bads.add(left);
+			bads.add(node);
+			return;
 		}
-		if(right == null) {
-			if(left != null && node.val < left.val){
-				return node;
-			}
+		if (right != null && node.val > right.val) {
+			bads.add(node);
+			bads.add(right);
+			return;
 		}
-		
-		if(left != null && node.val < left.val) {
-			return node;
-		}
-		if(right != null && node.val > right.val) {
-			return node;
-		}
-		
-		TreeNode leftV = recover(node.left, left, node);
-		TreeNode rightV = recover(node.right, node, right);
-		if(leftV != null && rightV != null) {
-			switchValue(leftV, rightV);
-		} else if (leftV == null && rightV != null) {
-			switchValue(node, rightV);
-		} else if(leftV != null && rightV == null) {
-			switchValue(leftV, node);
-		}
-		return null;
-		
-	}
 
-	private void switchValue(TreeNode leftV, TreeNode rightV) {
-		int tmp = leftV.val;
-		leftV.val = rightV.val;
-		rightV.val = tmp;
-	}
+		recover(node.left, left, node, bads);
+		recover(node.right, node, right, bads);
+		return;
 
+	}
 }
